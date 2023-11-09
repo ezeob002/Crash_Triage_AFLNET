@@ -18,11 +18,7 @@ cd ../..                              # Move to the top tree folder
 pip install -r requirements.txt         # Install other libraries
 ```
 
-**Test Harness**
-```bash
-cd examples/cs104_server_no_threads
-make -j<N CPU>
-```
+
 This gives a compiled server example
 ## Usage
 
@@ -52,7 +48,6 @@ optional arguments:
 ```
 **Run the example server for EPICS**
 ```bash
-cd <path-mcfics>
 python crash_triage.py -dp /your-afl-data-path
 ```
 ## Acknowledgement 
