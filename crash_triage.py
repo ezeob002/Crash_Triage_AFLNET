@@ -17,7 +17,7 @@ def main():
             formatter_class=argparse.RawTextHelpFormatter
         )
     parser.add_argument("-dp", "--data_path", type=str, help="Data path of the Crash input")
-    parser.add_argument("-sp", "--server_path", type=str, help="Compiled server path")
+    parser.add_argument("-sp", "--server_path", type=str, default="./targets/mailbox mypv", help="Compiled server path")
     parser.add_argument("-rp", "--result_path", type=str, default="./result", help="result path")
     parser.add_argument("-st", "--send_timeout", type=int, default=3.0, help="Send Timeout")
     parser.add_argument("-rt", "--recv_timeout", type=int, default=3.0, help="Recv timeout")
@@ -54,7 +54,7 @@ def main():
             for file in files:
                 if not file.endswith(".txt"): # To avoid README.txt
                     data.append(os.path.join(root,file))
-    print(len(data))
+    # print(len(data))
 
     client = TCPSocketConnection(host=args.host,
                                      port=args.port,
@@ -110,6 +110,7 @@ def main():
                     time.sleep(0.05)
                 except:
                     pass
+        exit()
         
             
 if __name__ == "__main__":
