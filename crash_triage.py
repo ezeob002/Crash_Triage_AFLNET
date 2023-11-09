@@ -11,16 +11,16 @@ from triage.utils.tcp_socket_connection import TCPSocketConnection
 from triage.utils.ip_constants import DEFAULT_MAX_RECV
 
 def main():
-
+    message= " A script to help investigate crash from AFLNET and MCFICS"
     parser = argparse.ArgumentParser(
-            description=logo,
+            description=message,
             formatter_class=argparse.RawTextHelpFormatter
         )
     parser.add_argument("-dp", "--data_path", type=str, help="Data path of the Crash input")
     parser.add_argument("-sp", "--server_path", type=str, help="Compiled server path")
-    parser.add_argument("-rp", "--result_path", type=str, default="./result" help="result path")
-    arser.add_argument("-st", "--send_timeout", type=int, default=3.0, help="Send Timeout")
-    arser.add_argument("-rt", "--recv_timeout", type=int, default=3.0, help="Recv timeout")
+    parser.add_argument("-rp", "--result_path", type=str, default="./result", help="result path")
+    parser.add_argument("-st", "--send_timeout", type=int, default=3.0, help="Send Timeout")
+    parser.add_argument("-rt", "--recv_timeout", type=int, default=3.0, help="Recv timeout")
     parser.add_argument("-p", "--port", type=int, default=5075, help="target port")
     parser.add_argument("-hs", "--host", type=str, default="127.0.0.1",  help="target host")
     args = parser.parse_args()
@@ -48,13 +48,13 @@ def main():
 
     server_with_gdb =  Executor()
     data_path = args.data_path
-    server_path = args.sever_path
-
+    server_path = args.server_path
+    data = []
     for root, dirs, files in os.walk(data_path):
             for file in files:
-                if not file.endswith(".txt"):
+                if not file.endswith(".txt"): # To avoid README.txt
                     data.append(os.path.join(root,file))
-        print(len(data))
+    print(len(data))
 
     client = TCPSocketConnection(host=args.host,
                                      port=args.port,
@@ -64,12 +64,12 @@ def main():
     res_path = args.result_path
     os.makedirs(res_path, exist_ok=True)
     N = 1 #Hard code for now.
+    cmd = 'gdb -x gdb.script --batch --args {}  '.format(args.server_path)
     for d in data:
-        count += 1
         seq = Replay.replay_data_afl(d)
         file_name = os.path.basename(d)
         for i in range(N):
-            output_gdb_script = gdb_script % ("{}/res_{}.txt".format(res_path,count))
+            output_gdb_script = gdb_script % ("{}/{}.txt".format(res_path,file_name))
             open('gdb.script', 'w').write(output_gdb_script)
             abort_test = False
             try:
@@ -98,10 +98,10 @@ def main():
                         recv = client.recv(DEFAULT_MAX_RECV)
                         print("Receiving {}".format(recv))
                         time.sleep(0.001)
-                    except:
-                        print("Unable to send message {} - {}".format(d, count))
+                    except Exception as e:
+                        print(" {} got this error - {}".format(d, e))
             except Exception as e:
-                print("Something went wrong!")
+                print(e)
             finally:
                 try:
                     time.sleep(1.0)
