@@ -47,7 +47,7 @@ optional arguments:
 ```
 **Run the example server for EPICS**
 ```bash
-python crash_triage.py -dp /your-afl-data-path
+python crash_triage.py -dp /your-afl-replayable-crash-data-folder
 ```
 ## Acknowledgement 
 We would like to the following code repository, this project will not be possible with this code base.
