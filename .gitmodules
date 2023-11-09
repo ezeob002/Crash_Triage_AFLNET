@@ -1,0 +1,3 @@
+[submodule "3rd_party_code/exploitable"]
+	path = 3rd_party_code/exploitable
+	url = git@github.com:jfoote/exploitable.git

@@ -4,7 +4,6 @@ import psutil
 import time
 
 
-
 class Executor(object):
 
     __TIMEOUT_SIGNAL = 9998
