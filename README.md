@@ -19,7 +19,6 @@ pip install -r requirements.txt         # Install other libraries
 ```
 
 
-This gives a compiled server example
 ## Usage
 
 ```bash
